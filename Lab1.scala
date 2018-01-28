@@ -8,9 +8,9 @@ object Lab1 extends jsy.util.JsyApplication with jsy.lab1.Lab1Like {
 
   /*
    * CSCI 3155: Lab 1
-   * Neil Nguyen
+   * Julian Lambert
    *
-   * Partner: Julian Lambert
+   * Partner: Neil Nguyen
    * Collaborators: <Any Collaborators>
    */
 
@@ -71,7 +71,7 @@ object Lab1 extends jsy.util.JsyApplication with jsy.lab1.Lab1Like {
   def sqrtStep(c: Double, xn: Double): Double = xn - (xn*xn-c)/(2*xn) //performs squre root step usign newton's method
 
   def sqrtN(c: Double, x0: Double, n: Int): Double =  {
-    require(n >= 0)
+    require(n >= 0) //avoid mathematical errors
     if (n == 0) x0 else { //checks for n value
       sqrtN(c, sqrtStep(c, x0), n - 1) //does sqrtStep n times
     }
@@ -80,7 +80,7 @@ object Lab1 extends jsy.util.JsyApplication with jsy.lab1.Lab1Like {
   def sqrtErr(c: Double, x0: Double, epsilon: Double): Double =  {
     require(epsilon > 0) //require an epsilon of greater than 0 value
     if ((x0 * x0 - c) * (x0 * x0 - c) < epsilon * epsilon) x0 else { //finds sqrt with error less than epsilon
-      sqrtErr(c, sqrtStep(c, x0), epsilon)
+      sqrtErr(c, sqrtStep(c, x0), epsilon) //recursive call
     }
   }
 
@@ -124,28 +124,28 @@ object Lab1 extends jsy.util.JsyApplication with jsy.lab1.Lab1Like {
   }
 
   def deleteMin(t: SearchTree): (SearchTree, Int) = {
-    require(t != Empty)
+    require(t != Empty) //tree cannot be empty
     (t: @unchecked) match {
-      case Node(Empty, d, r) => (r, d)
-      case Node(l, d, r) =>
-        val (l1, m) = deleteMin(l)
-        (Node(l1, d, r), m)
+      case Node(Empty, d, r) => (r, d) //no left children, this must be min. return right tree
+      case Node(l, d, r) => //has left children
+        val (l1, m) = deleteMin(l) //recurse down left child of tree
+        (Node(l1, d, r), m) //return node with new left branch and min value
     }
   }
 
   def delete(t: SearchTree, n: Int): SearchTree = t match {
-    case Empty => Empty
-    case Node(l, d, r) => if (n < d) {
-      Node(delete(l,n),d,r)
-    } else if (n == d) {
-      if (r != Empty) {
-        val (r1, m) = deleteMin(r)
-        Node(l, m, r1)
-      } else {
-        if (l != Empty) l else Empty
+    case Empty => Empty //if no elements remain, return empty
+    case Node(l, d, r) => if (n < d) { //target less than current node
+      Node(delete(l,n),d,r) //recurse down left path
+    } else if (n == d) { //target found
+      if (r != Empty) { //if r has right children...
+        val (r1, m) = deleteMin(r) //...run deleteMin on right tree
+        Node(l, m, r1) //return Node with modified right tree and swapped min value
+      } else { //no right children
+        if (l != Empty) l else Empty //either return left tree (left children) or nothing (no children)
       }
-    } else { // n > d
-      Node(l, d, delete(r,n))
+    } else { //target greater than current node
+      Node(l, d, delete(r,n)) //recurse down right path
     }
   }
 

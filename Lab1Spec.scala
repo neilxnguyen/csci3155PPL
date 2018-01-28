@@ -47,6 +47,14 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assertResult(2) {
       plus(1, 1)
     }
+
+    // Student-defined test cases
+    assertResult(0){
+      plus(0,0)
+    }
+    assertResult(-1) {
+      plus(0,-1)
+    }
   }
 
   /* Exercises */
@@ -57,6 +65,14 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
      assert(abs(2) === 2)
      assert(abs(-2) === 2)
      assert(abs(0) === 0)
+
+    // Student-defined test cases
+    assertResult(1){
+      abs(-1)
+    }
+    assertResult(0) {
+      abs(-0)
+    }
   }
 
   // Check that xor works for all four combinations of boolean values
@@ -66,6 +82,14 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(xor(true, false))
     assert(xor(false, true))
     assert(!xor(false, false))
+
+    // Student-defined test cases
+    assertResult(true){
+      xor(!true, !false)
+    }
+    assertResult(false){
+      xor(xor(false,false), xor(true,true))
+    }
   }
 
   // Check that repeat works
@@ -77,12 +101,31 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(repeat("abc", 1) === "abc")
     assert(repeat("abc", 4) === "abcabcabcabc")
     assert(repeat("", 5) === "")
+
+    // Student-defined tests
+    assertResult("   "){
+      repeat(" ",3)
+    }
+    assertResult("test"){
+      repeat("test",1)
+    }
+    assertResult("aaaaaaaaa"){
+      repeat(repeat("a",3),3)
+    }
   }
 
   // it says make this test in the same category as the last one
   it should "evaluate to an empty string when repeated zero times" in {
     assert(repeat("abc", 0) === "")
     assert(repeat("", 0) === "")
+
+    //Student-defined tests
+    assertResult(""){
+      repeat("     ",0)
+    }
+    assertResult(""){
+      repeat("123",0)
+    }
   }
 
   // Check that repeat requires a non-negative repetition amount
@@ -90,6 +133,11 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
   it should "throw an exception when a negative number of repetitions is expected" in {
     intercept[java.lang.IllegalArgumentException] {
       repeat("abc", -3)
+    }
+
+    // Student-defined tests
+    intercept[java.lang.IllegalArgumentException] {
+      repeat("aaa", -1)
     }
   }
 
@@ -99,6 +147,14 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(sqrtStep(4, 1) === 2.5)
     assert(sqrtStep(1, 1) === 1.0)
     assert(sqrtStep(5, 8) === 4.3125)
+
+    // Student-defined tests
+    assertResult(4.0){
+      sqrtStep(0,8)
+    }
+    assertResult(0.5){
+      sqrtStep(0,1)
+    }
   }
 
   "sqrtN" should "perform several iterations of sqrtStep" in {
@@ -106,17 +162,38 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(sqrtN(4,1,6) === 2.0)
     assert(sqrtN(4,20,2) === 5.248019801980198)
     assert(sqrtN(4,20,6) === 2.0000105791285385)
+
+    // Student-defined tests
+    assertResult(1.025){
+      sqrtN(1,2,2)
+    }
+    assertResult(0.03125){
+      sqrtN(0,1,5)
+    }
   }
 
   it should "evaluate to x0 if n is zero" in {
     assert(sqrtN(4,1,0) === 1.0)
     assert(sqrtN(4,20,0) === 20.0)
+
+    // Student-defined tests
+    assertResult(3.0){
+      sqrtN(0,3,0)
+    }
+    assertResult(1.0){
+      sqrtN(9,1,0)
+    }
   }
 
   "sqrtErr" should "perform iterations until the error is within epsilon" in {
     assert(sqrtErr(4, 1, 0.1) === 2.000609756097561)
     assert(sqrtErr(4, 1, 0.0001) === 2.0000000929222947)
     assert(sqrtErr(4, 1, 0.00000001) === 2.000000000000002)
+
+    // Student-defined tests
+    assert(abs(sqrtErr(9, 2, 0.01) - 3) <= 0.01)
+    assert(abs(sqrtErr(4, 2, 0.001) - 2) <= 0.001)
+
   }
 
 
@@ -126,6 +203,11 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     intercept[java.lang.IllegalArgumentException] {
       sqrtN(4, 1, -10)
     }
+
+    // Student-defined tests
+    intercept[java.lang.IllegalArgumentException] {
+      sqrtN(9, 2, -1)
+    }
   }
 
   "sqrtErr" should "throw an exception when using a non-positive epsilon" in {
@@ -134,6 +216,11 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     }
     intercept[java.lang.IllegalArgumentException] {
       sqrtErr(4, 1, 0.0)
+    }
+
+    // Student-defined tests
+    intercept[java.lang.IllegalArgumentException] {
+      sqrtErr(9, 2, -0.0000001)
     }
   }
 
@@ -160,6 +247,10 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(!repOk(t3))
     assert(repOk(t4))
     assert(repOk(t5))
+
+    //Student-defined tests
+    assert(repOk(t9))
+    assert(repOk(t11))
   }
 
   // insertion
@@ -169,6 +260,9 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(insert(t1, 2) === t5)
     assert(insert(t6, 2) === t2)
     assert(insert(t1, 4) === t7)
+
+    //Student-defined tests
+    assert(insert(t1, 1) === t10)
   }
 
   // deleteMin
@@ -178,6 +272,9 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(deleteMin(t1) === (Empty, 2))
     assert(deleteMin(t5) === (t1, 2))
     assert(deleteMin(t4) === (Node(Empty, 4, Node(Empty, 4, Node(Empty, 5, Empty))), 2))
+
+    //Student-defined tests
+    assert(deleteMin(t10) === (t1, 1))
   }
 
   // delete
@@ -189,6 +286,9 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(delete(t8, 3) === t10)
     assert(delete(t8, 2) === t11)
     assert(delete(t8, 4) === t8)
+
+    //Student-defined tests
+    assert((delete(t10, 1),1) === deleteMin(t10))
   }
 
   // Some more testing code that uses the Scala List libray.  The function 'treeFromList'
@@ -206,6 +306,10 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
     assert(repOk(treeFromList(List(1, 2, 3, 4, 5))))
     assert(repOk(treeFromList(List(9, 8, 7, 6, 5))))
     assert(repOk(treeFromList(List(1, 1, 1, 1))))
+
+    //Student-defined tests
+    assert(repOk(treeFromList(List(5, 2, 4, 3))))
+    assert(repOk(treeFromList(List())))
   }
 
   "insert-delete" should "produce tress that satisfy repOk" in {
@@ -218,6 +322,9 @@ class Lab1Spec(lab1: Lab1Like) extends FlatSpec {
           t1
         }
     )
+
+    //Student-defined tests
+    assert(delete(insert(t10,3),3) === t10)
   }
 
   // Eval
