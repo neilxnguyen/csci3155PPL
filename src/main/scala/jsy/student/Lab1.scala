@@ -82,7 +82,7 @@ object Lab1 extends jsy.util.JsyApplication with jsy.lab1.Lab1Like {
 
   def sqrtErr(c: Double, x0: Double, epsilon: Double): Double = {
     require(epsilon > 0)
-    if ((x0 * x0 - c) * (x0 * x0 - c) < epsilon * epsilon) x0 else {
+    if ((x0 * x0 - c) * (x0 * x0 - c) < (epsilon * epsilon)) x0 else {
       sqrtErr(c, sqrtStep(c, x0), epsilon)
     }
   }
@@ -140,17 +140,16 @@ object Lab1 extends jsy.util.JsyApplication with jsy.lab1.Lab1Like {
   def delete(t: SearchTree, n: Int): SearchTree = t match {
     case Empty => Empty
     case Node(l, d, r) => if (n < d) {
-        delete(l,n)
+        Node(delete(l,n),d,r)
     } else if (n == d) {
       if (r != Empty) {
         val (r1, m) = deleteMin(r)
         Node(l, m, r1)
       } else {
-        val (r1, m) = deleteMin(l)
-        Node(r1, m, r)
+        if (l != Empty) l else Empty
       }
     } else { // n > d
-      delete(r,n)
+      Node(l,d,delete(r,n))
     }
   }
 

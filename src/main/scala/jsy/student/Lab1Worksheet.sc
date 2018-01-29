@@ -30,9 +30,14 @@ plus(-1,2)
 abs(5)
 abs(-8)
 
+sqrtN(0,1,5)
 // We can check the implementation here, though it better to write tests
 // in Lab1Spec.scala.
 assert(plus(1, 1) == 2)
+sqrtN(1,2,2)
+sqrtErr(4, 1, 0.1)
+abs(sqrtErr(9, 2, 0.01)-3)
+sqrtErr(0, 2, 0.0001)
 //assert(abs(-1) == 1)
 
 // Braces {} can be used wherever parentheses () can be (but not the other
